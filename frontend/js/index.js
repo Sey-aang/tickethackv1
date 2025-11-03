@@ -1,3 +1,5 @@
+//test des branch try
+
 const BACKEND_URL = "http://localhost:3000";
 
 document.getElementById("search-btn").addEventListener("click", searchTrips);
