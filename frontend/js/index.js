@@ -1,6 +1,5 @@
-//test des branch try
-
-const BACKEND_URL = "http://localhost:3000";
+// Importe la config
+import { BACKEND_URL } from "./config.js";
 
 document.getElementById("search-btn").addEventListener("click", searchTrips);
 
@@ -14,24 +13,29 @@ async function searchTrips() {
     return;
   }
 
-  const response = await fetch(
-    `${BACKEND_URL}/trips/${departure}/${arrival}/${date}`
-  );
-  const data = await response.json();
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/trips/${departure}/${arrival}/${date}`
+    );
+    const data = await response.json();
 
-  const resultsContainer = document.getElementById("results-container");
-  resultsContainer.innerHTML = "";
+    const resultsContainer = document.getElementById("results-container");
+    resultsContainer.innerHTML = "";
 
-  if (data.result && data.trips.length > 0) {
-    data.trips.forEach((trip) => {
-      const tripCard = createTripCard(trip);
-      resultsContainer.appendChild(tripCard);
-    });
-  } else {
-    resultsContainer.innerHTML = `
-      <img src="images/notfound.png" alt="Not found" class="placeholder-icon">
-      <p>No trip found.</p>
-    `;
+    if (data.result && data.trips.length > 0) {
+      data.trips.forEach((trip) => {
+        const tripCard = createTripCard(trip);
+        resultsContainer.appendChild(tripCard);
+      });
+    } else {
+      resultsContainer.innerHTML = `
+        <img src="images/notfound.jpg" alt="Not found" class="placeholder-icon">
+        <p>No trip found.</p>
+      `;
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Erreur de connexion au serveur");
   }
 }
 
@@ -62,15 +66,20 @@ function createTripCard(trip) {
 async function addToCart(e) {
   const trip = JSON.parse(e.target.dataset.trip);
 
-  const response = await fetch(`${BACKEND_URL}/carts`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(trip),
-  });
+  try {
+    const response = await fetch(`${BACKEND_URL}/carts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(trip),
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (data.result) {
-    alert("Trip added to cart!");
+    if (data.result) {
+      alert("Trip added to cart!");
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Erreur lors de l'ajout au panier");
   }
 }

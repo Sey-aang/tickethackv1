@@ -1,21 +1,26 @@
-const BACKEND_URL = "http://localhost:3000";
+import { BACKEND_URL } from "./config.js";
 
 document.addEventListener("DOMContentLoaded", loadBookings);
 
 async function loadBookings() {
-  const response = await fetch(`${BACKEND_URL}/bookings`);
-  const data = await response.json();
+  try {
+    const response = await fetch(`${BACKEND_URL}/bookings`);
+    const data = await response.json();
 
-  const bookingsContainer = document.getElementById("bookings-container");
-  bookingsContainer.innerHTML = "";
+    const bookingsContainer = document.getElementById("bookings-container");
+    bookingsContainer.innerHTML = "";
 
-  if (data.result && data.bookings.length > 0) {
-    data.bookings.forEach((booking) => {
-      const bookingItem = createBookingItem(booking);
-      bookingsContainer.appendChild(bookingItem);
-    });
-  } else {
-    bookingsContainer.innerHTML = "<p>No booking yet.</p>";
+    if (data.result && data.bookings.length > 0) {
+      data.bookings.forEach((booking) => {
+        const bookingItem = createBookingItem(booking);
+        bookingsContainer.appendChild(bookingItem);
+      });
+    } else {
+      bookingsContainer.innerHTML = "<p>No booking yet.</p>";
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    bookingsContainer.innerHTML = "<p>Erreur de connexion au serveur</p>";
   }
 }
 
