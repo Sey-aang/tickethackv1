@@ -7,6 +7,6 @@ const isDevelopment =
 
 const BACKEND_URL = isDevelopment
   ? "http://localhost:3000"
-  : "tickethackv1-iqcv-jw6ikbgl1-sey-aangs-projects.vercel.app"; // ← Change avec ton URL Vercel!
+  : "tickethackv1-abhs-n7qchc8jm-sey-aangs-projects.vercel.app"; // ← Change avec ton URL Vercel!
 
 export { BACKEND_URL };
